@@ -1,6 +1,7 @@
 class basicDetection(object):
 	def __init__(self):
-		pass
+		self.findSensitiveObject()
+		self.sendImage()
 
 	def loadImage(self):
 		raise NotImplementedError
