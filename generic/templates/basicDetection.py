@@ -7,7 +7,8 @@ class basicDetection(object):
 		raise NotImplementedError
 
 	def findSensitiveObject(self):
-		raise NotImplementedError
+		self.loadImage()
+		self.removeSensitiveObject()
 
 	def removeSensitiveObject(self):
 		raise NotImplementedError
