@@ -1,6 +1,7 @@
 class basicDetection(object):
 	def __init__(self):
-		self.findSensitiveObject()
+		faces, image = self.findSensitiveObject()
+		self.removeSensitiveObject(faces, image)
 		self.sendImage()
 
 	def loadImage(self):
@@ -10,7 +11,7 @@ class basicDetection(object):
 		self.loadImage()
 		self.removeSensitiveObject()
 
-	def removeSensitiveObject(self):
+	def removeSensitiveObject(self, faces, image):
 		raise NotImplementedError
 
 	def sendImage(self):
