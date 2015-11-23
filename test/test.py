@@ -1,3 +1,4 @@
+import os
 import sys
 
 sys.path.append("C:\\Users\\Nocturne\\Desktop\\magister")
@@ -10,20 +11,32 @@ class test(faceDetection):
 		self.testAbba()
 
 	def testAbba(self):
-		expectedFaces = 4
-		for scale in range(11, 14, 1):
-			for neighbor in range(1,5):
-				for flag in range (10, 30, 5):
-					for size in range (5,30,5):
-						faces, image = self.findSensitiveObject(scaleFactor=(scale/10.0), minNeighbors=neighbor, flags=flag, minSize=(size, size+5))
-						if expectedFaces < len(faces):
-							continue
-						for (x, y, w, h) in faces:
-							for i in range(4):
-								if x >= imageDict["abba"][i]["x1"] and (x+w) <= imageDict["abba"][i]["x2"] and y >= imageDict["abba"][i]["y1"] and (y+h) <= imageDict["abba"][i]["y2"]:
-									print i
-									print "%s %s %s %s" % (scale, neighbor, flag, size)
-						#self.removeSensitiveObject(faces, image)
+		filelist = self.listdir_fullpath("C:\Users\Nocturne\Desktop\magister\sensitiveObject\utils\images")#os.listdir("C:\Users\Nocturne\Desktop\magister\sensitiveObject\utils\images")
+		for url in filelist:
+			basename = os.path.basename(url)
+			print basename
+			for scale in range(11, 14, 1):
+				for neighbor in range(1,5):
+					for flag in range (10, 30, 5):
+						for size in range (5,30,5):
+							counter = 0
+							faces, image = self.findSensitiveObject(imageUrl=url, scaleFactor=(scale/10.0), minNeighbors=neighbor, flags=flag, minSize=(size, size+5), rotate=0)
+							if imageDict[basename]["expFace"] < len(faces):
+								print "%s != %s" % (imageDict[basename]["expFace"], len(faces))
+								continue
+							elif imageDict[basename]["expFace"] == len(faces):
+								print "%s %s %s %s" % (scale/10.0, neighbor, flag, size)
+								self.removeSensitiveObject(faces, image)
+							for (x, y, w, h) in faces:
+								for i in range(imageDict[basename]["expFace"]):
+									if x >= imageDict[basename][i]["x1"] and (x+w) <= imageDict[basename][i]["x2"] and y >= imageDict[basename][i]["y1"] and (y+h) <= imageDict[basename][i]["y2"]:
+										print i
+										counter = counter + 1
+							print (counter / len(faces)) * 100
+							#	self.removeSensitiveObject(faces, image)
+
+	def listdir_fullpath(self, d):
+		return [os.path.join(d, f) for f in os.listdir(d)]
 
 if __name__ == '__main__':
     test()
