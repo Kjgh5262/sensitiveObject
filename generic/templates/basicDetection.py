@@ -13,7 +13,7 @@ class basicDetection(object):
 		self.loadImage()
 		self.removeSensitiveObject()
 
-	def removeSensitiveObject(self, faces, image):
+	def removeSensitiveObject(self, faces, image, rotate):
 		raise NotImplementedError
 
 	def sendImage(self):
